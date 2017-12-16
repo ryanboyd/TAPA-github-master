@@ -50,6 +50,7 @@
             this.FunctionWordTextBox = new System.Windows.Forms.TextBox();
             this.StopListButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
+            this.CountsAndSumsCheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.NormDataGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -165,14 +166,15 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.CountsAndSumsCheckbox);
             this.groupBox1.Controls.Add(this.WordCaseSensitiveCheckbox);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.EncodingDropdown);
             this.groupBox1.Controls.Add(this.PunctuationBox);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Location = new System.Drawing.Point(665, 153);
+            this.groupBox1.Location = new System.Drawing.Point(665, 136);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(202, 154);
+            this.groupBox1.Size = new System.Drawing.Size(202, 174);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Text Analysis Options";
@@ -191,7 +193,7 @@
             // 
             this.groupBox2.Controls.Add(this.LoadNormsButton);
             this.groupBox2.Controls.Add(this.AddColumnButton);
-            this.groupBox2.Location = new System.Drawing.Point(665, 26);
+            this.groupBox2.Location = new System.Drawing.Point(665, 22);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 100);
             this.groupBox2.TabIndex = 19;
@@ -252,6 +254,16 @@
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
+            // CountsAndSumsCheckbox
+            // 
+            this.CountsAndSumsCheckbox.AutoSize = true;
+            this.CountsAndSumsCheckbox.Location = new System.Drawing.Point(6, 146);
+            this.CountsAndSumsCheckbox.Name = "CountsAndSumsCheckbox";
+            this.CountsAndSumsCheckbox.Size = new System.Drawing.Size(188, 17);
+            this.CountsAndSumsCheckbox.TabIndex = 21;
+            this.CountsAndSumsCheckbox.Text = "Include counts and sums in output";
+            this.CountsAndSumsCheckbox.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -308,6 +320,7 @@
         private System.Windows.Forms.TextBox FunctionWordTextBox;
         private System.Windows.Forms.Button StopListButton;
         private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.CheckBox CountsAndSumsCheckbox;
     }
 }
 

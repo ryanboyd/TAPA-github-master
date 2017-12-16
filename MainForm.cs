@@ -512,6 +512,9 @@ namespace Textual_Affective_Properties_Analyzer
             }
             var files = Directory.EnumerateFiles(((string[])e.Argument)[0], "*.txt", SearchDepth);
 
+            //check and see if we want to include this information in the output
+            //we do this here so that we only have to reach out to the UI once instead of repeatedly below
+            var IncludeCountsAndSumsInOutput = CountsAndSumsCheckbox.Checked;
 
 
 
@@ -526,30 +529,51 @@ namespace Textual_Affective_Properties_Analyzer
                     //set up the header data for character output
                     if (CharDict.Count() > 0)
                     {
-                        foreach (string property in SymbolProperties)
-                        {
-                            HeaderString += ",\"Char_" + property + "_TotalCount\"";
+                        //we only want this output if it is checked
+                        if (IncludeCountsAndSumsInOutput) { 
+                            foreach (string property in SymbolProperties)
+                            {
+                                HeaderString += ",\"Char_" + property + "_TotalCount\"";
+                            }
                         }
+
                         foreach (string property in SymbolProperties)
                         {
                             HeaderString += ",\"Char_" + property + "_TotalAvg\"";
                         }
-                        foreach (string property in SymbolProperties)
+
+                        //we only want this output if it is checked
+                        if (IncludeCountsAndSumsInOutput)
                         {
-                            HeaderString += ",\"Char_" + property + "_TotalSum\"";
+                            foreach (string property in SymbolProperties)
+                            {
+                                HeaderString += ",\"Char_" + property + "_TotalSum\"";
+                            }
                         }
-                        foreach (string property in SymbolProperties)
+
+                        //we only want this output if it is checked
+                        if (IncludeCountsAndSumsInOutput)
                         {
-                            HeaderString += ",\"Char_" + property + "_WordCount\"";
+                            foreach (string property in SymbolProperties)
+                            {
+                                HeaderString += ",\"Char_" + property + "_WordCount\"";
+                            }
                         }
+
                         foreach (string property in SymbolProperties)
                         {
                             HeaderString += ",\"Char_" + property + "_WordAvg\"";
                         }
-                        foreach (string property in SymbolProperties)
+
+                        //we only want this output if it is checked
+                        if (IncludeCountsAndSumsInOutput)
                         {
-                            HeaderString += ",\"Char_" + property + "_WordSum\"";
+                            foreach (string property in SymbolProperties)
+                            {
+                                HeaderString += ",\"Char_" + property + "_WordSum\"";
+                            }
                         }
+
                     }
 
                     if (WordDict.Count() > 0)
@@ -557,17 +581,29 @@ namespace Textual_Affective_Properties_Analyzer
 
                         //set up the header data for word output
                         //set up the header data for word output
-                        foreach (string property in SymbolProperties)
+
+                        //we only want this output if it is checked
+                        if (IncludeCountsAndSumsInOutput)
                         {
-                            HeaderString += ",\"Word_" + property + "_Count\"";
+                            foreach (string property in SymbolProperties)
+                            {
+                                HeaderString += ",\"Word_" + property + "_Count\"";
+                            }
                         }
+
+
                         foreach (string property in SymbolProperties)
                         {
                             HeaderString += ",\"Word_" + property + "_Avg\"";
                         }
-                        foreach (string property in SymbolProperties)
+
+                        //we only want this output if it is checked
+                        if (IncludeCountsAndSumsInOutput)
                         {
-                            HeaderString += ",\"Word_" + property + "_Sum\"";
+                            foreach (string property in SymbolProperties)
+                            {
+                                HeaderString += ",\"Word_" + property + "_Sum\"";
+                            }
                         }
                     }
 
@@ -970,8 +1006,29 @@ namespace Textual_Affective_Properties_Analyzer
 
                             //this is for when we're writing the output
                             ushort NumberOfOutputColumns = 0;
-                            if (CharDict.Count > 0) NumberOfOutputColumns += 6;
-                            if (WordDict.Count > 0) NumberOfOutputColumns += 3;
+                            if (CharDict.Count > 0) {
+                                if (IncludeCountsAndSumsInOutput)
+                                {
+                                    NumberOfOutputColumns += 6;
+                                } else
+                                {
+                                    NumberOfOutputColumns += 2;
+                                }
+
+                            }
+
+                            if (WordDict.Count > 0)
+                            {
+                                if (IncludeCountsAndSumsInOutput)
+                                {
+                                    NumberOfOutputColumns += 3;
+                                }
+                                else
+                                {
+                                    NumberOfOutputColumns += 1;
+                                }
+                            }
+
 
 
 
@@ -994,38 +1051,51 @@ namespace Textual_Affective_Properties_Analyzer
                         if (CharDict.Count > 0)
                             {
 
+                                if (IncludeCountsAndSumsInOutput)
+                                {
+                                    PropCount = SymbolProperties.Count() * OutputPositionIncrementer;
+                                    if (CharList.Length > 0)
+                                    {
+                                        //add in the properties being coded from the overarching character dictionary (counts)
+                                        for (int i = 0; i < SymbolProperties.Length; i++)
+                                        {
+                                            OutputString[i + HeaderVars + PropCount] = CharsPerProperty[i].ToString();
+                                        }
+                                        OutputPositionIncrementer++;
+                                    }
+                                }
+
+
                                 PropCount = SymbolProperties.Count() * OutputPositionIncrementer;
                                 if (CharList.Length > 0)
                                 {
-                                    //add in the properties being coded from the overarching character dictionary
-                                    for (int i = 0; i < SymbolProperties.Length; i++)
-                                    {
-                                        OutputString[i + HeaderVars + PropCount] = CharsPerProperty[i].ToString();
-                                    }
-                                    OutputPositionIncrementer++;
-                                }
-
-                                    PropCount = SymbolProperties.Count() * OutputPositionIncrementer;
-                                if (CharList.Length > 0)
-                                {
-                                    //add in the properties being coded from the overarching character dictionary
+                                    //add in the properties being coded from the overarching character dictionary (averages)
                                     for (int i = 0; i < SymbolProperties.Length; i++)
                                     {
                                         if (CharsPerProperty[i] > 0) OutputString[i + HeaderVars + PropCount] = Math.Round(CharPropertySums[SymbolProperties[i]] / (double)CharsPerProperty[i], 5).ToString();
                                     }
                                     OutputPositionIncrementer++;
                                 }
+
+
+                                if (IncludeCountsAndSumsInOutput)
+                                {
                                     //raw sums of each variable
                                     PropCount = SymbolProperties.Length * OutputPositionIncrementer;
-                                for (int i = 0; i < SymbolProperties.Length; i++)
-                                        {
-                                            if (CharsPerProperty[i] > 0) OutputString[i + HeaderVars + PropCount] = CharPropertySums[SymbolProperties[i]].ToString();
-                                        }
+                                    for (int i = 0; i < SymbolProperties.Length; i++)
+                                    {
+                                        if (CharsPerProperty[i] > 0) OutputString[i + HeaderVars + PropCount] = CharPropertySums[SymbolProperties[i]].ToString();
+                                    }
                                     OutputPositionIncrementer++;
+                                }
 
 
 
-                                    //now we do the same things, but for the word level
+
+                                //now we do the same things, but for the word level
+
+                                if (IncludeCountsAndSumsInOutput)
+                                {
                                     PropCount = SymbolProperties.Count() * OutputPositionIncrementer;
                                     if (CharList.Length > 0)
                                     {
@@ -1035,40 +1105,57 @@ namespace Textual_Affective_Properties_Analyzer
                                             OutputString[i + HeaderVars + PropCount] = WordsWithCodedCharsPerProperty[i].ToString();
                                         }
                                         OutputPositionIncrementer++;
+                                    }
+                                }
 
-                                        PropCount = SymbolProperties.Length * OutputPositionIncrementer;
+
+                                    //this is the average at the word level
+                                    PropCount = SymbolProperties.Length * OutputPositionIncrementer;
                                     for (int i = 0; i < SymbolProperties.Length; i++)
                                     {
                                         if (WordsWithCodedCharsPerProperty[i] > 0) OutputString[i + HeaderVars + PropCount] = Math.Round(WordCharPropertySums[SymbolProperties[i]] / (double)WordsWithCodedCharsPerProperty[i], 5).ToString();
                                     }
                                     OutputPositionIncrementer++;
 
-                                //now we do the same things, but for the word level
-                                    PropCount = SymbolProperties.Length * OutputPositionIncrementer;
-                                    for (int i = 0; i < SymbolProperties.Length; i++)
+
+
+
+                                    if (IncludeCountsAndSumsInOutput)
                                     {
-                                        if (WordsWithCodedCharsPerProperty[i] > 0) OutputString[i + HeaderVars + PropCount] = WordCharPropertySums[SymbolProperties[i]].ToString();
+                                        //this is the sum at the word level
+                                        PropCount = SymbolProperties.Length * OutputPositionIncrementer;
+                                        for (int i = 0; i < SymbolProperties.Length; i++)
+                                        {
+                                            if (WordsWithCodedCharsPerProperty[i] > 0) OutputString[i + HeaderVars + PropCount] = WordCharPropertySums[SymbolProperties[i]].ToString();
+                                        }
+                                        OutputPositionIncrementer++;
                                     }
-                                    OutputPositionIncrementer++;
+
 
                                 }
-                        }
+                        
 
-                        //again, we only write this stuff if we're actually coding for any words
+                            //again, we only write this stuff if we're actually coding for any words
                             if (WordDict.Count() > 0)
                             {
-                                        //this is where we'll do the same thing as above, but for word-level measures
-                                        //now we do the same things, but for the word level
+                                //this is where we'll do the same thing as above, but for word-level measures
 
+
+                                if (IncludeCountsAndSumsInOutput)
+                                {
                                     //now we do the same things, but for the word level
                                     PropCount = SymbolProperties.Count() * OutputPositionIncrementer;
-                                   
+
                                     //add in the properties being coded from the overarching character dictionary
                                     for (int i = 0; i < SymbolProperties.Length; i++)
                                     {
                                         OutputString[i + HeaderVars + PropCount] = WordsPerProperty[i].ToString();
                                     }
                                     OutputPositionIncrementer++;
+                                }
+
+
+
 
                                     PropCount = SymbolProperties.Length * OutputPositionIncrementer;
                                     for (int i = 0; i < SymbolProperties.Length; i++)
@@ -1077,12 +1164,16 @@ namespace Textual_Affective_Properties_Analyzer
                                     }
                                     OutputPositionIncrementer++;
 
+
+                                if (IncludeCountsAndSumsInOutput)
+                                {
                                     PropCount = SymbolProperties.Length * OutputPositionIncrementer;
                                     for (int i = 0; i < SymbolProperties.Length; i++)
                                     {
                                         if (WordsPerProperty[i] > 0) OutputString[i + HeaderVars + PropCount] = WordPropertySums[SymbolProperties[i]].ToString();
                                     }
                                     OutputPositionIncrementer++;
+                                }
                                 
                             }
 
@@ -1478,6 +1569,7 @@ namespace Textual_Affective_Properties_Analyzer
             FunctionWordTextBox.Enabled = false;
             StopListButton.Enabled = false;
             WordCaseSensitiveCheckbox.Enabled = false;
+            CountsAndSumsCheckbox.Enabled = false;
             NormDataGrid.DefaultCellStyle.BackColor = Color.Gray;
         }
 
@@ -1493,6 +1585,7 @@ namespace Textual_Affective_Properties_Analyzer
             WordCaseSensitiveCheckbox.Enabled = true;
             FunctionWordTextBox.Enabled = true;
             StopListButton.Enabled = true;
+            CountsAndSumsCheckbox.Enabled = true;
             NormDataGrid.DefaultCellStyle.BackColor = Color.White;
         }
 
