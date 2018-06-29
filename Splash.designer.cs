@@ -85,7 +85,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(100, 19);
             this.label3.TabIndex = 3;
-            this.label3.Text = "{TAPA v1.1.0}";
+            this.label3.Text = "{TAPA v1.1.2}";
             this.label3.UseWaitCursor = true;
             // 
             // Splash

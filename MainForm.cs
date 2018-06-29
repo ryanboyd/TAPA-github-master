@@ -5,9 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 
 
@@ -16,20 +17,33 @@ namespace Textual_Affective_Properties_Analyzer
 {
     public partial class MainForm : Form
     {
+
+
         public MainForm()
         {
+
+
+
             InitializeComponent();
 
             StopListLabel.Text = "Words to Omit\r\n(Case Insensitive)";
 
-            
-                       
-            //set up our encoding dropdown list
+           //set up our encoding dropdown list
             foreach (var encoding in Encoding.GetEncodings())
             {
                 EncodingDropdown.Items.Add(encoding.Name);
             }
-            EncodingDropdown.SelectedIndex = EncodingDropdown.FindStringExact(Encoding.Default.BodyName);
+
+            try
+            {
+                EncodingDropdown.SelectedIndex = EncodingDropdown.FindStringExact("utf-8");
+            }
+            catch
+            {
+                EncodingDropdown.SelectedIndex = EncodingDropdown.FindStringExact(Encoding.Default.BodyName);
+            }
+
+            
 
             
 
@@ -1236,29 +1250,53 @@ namespace Textual_Affective_Properties_Analyzer
         private void AddColumnButton_Click(object sender, EventArgs e)
         {
 
-            string NewColName = "VariableName";
-            ShowInputDialog(ref NewColName);
 
-            if (NewColName == "VariableName")
-            {
-                return;
-            }
+            //this button USED to be for adding a new column, back when the interface was more interactive.
+            //somewhere along the way, something became broken. This prevented new values from being committed to
+            //cells in columns that were-user added. I cannot for the life of me figure out where the problem is,
+            //so now I've changed this to a button that just loads the default norms
 
-            bool AlreadyExisting = false;
-            foreach (DataGridViewColumn col in NormDataGrid.Columns)
-            {
-                if (NewColName == col.Name)
-                {
-                    MessageBox.Show("This variable name is already in use.", "Duplicate Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-                }
-            }
+            //string NewColName = "VariableName";
+            //ShowInputDialog(ref NewColName);
 
-            if (AlreadyExisting == false)
-            {
-                NormDataGrid.Columns.Add(NewColName, NewColName);
-                NormDataGrid.Columns[NormDataGrid.Columns.Count - 1].ValueType = typeof(string);
-            }
+            //if (NewColName == "VariableName")
+            //{
+            //    return;
+            //}
+
+            //bool AlreadyExisting = false;
+            //foreach (DataGridViewColumn col in NormDataGrid.Columns)
+            //{
+            //    if (NewColName == col.Name)
+            //    {
+            //        MessageBox.Show("This variable name is already in use.", "Duplicate Variable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //        break;
+            //    }
+            //}
+
+            //if (AlreadyExisting == false)
+            //{
+
+
+
+            //    DataGridViewColumn newcol = new DataGridViewColumn();
+            //    newcol.Name = NewColName;
+            //    newcol.HeaderText = NewColName;
+            //    newcol.CellTemplate = new DataGridViewTextBoxCell();
+            //    newcol.ValueType = typeof(double);
+
+            //    newcol.DataPropertyName = NewColName;
+
+            //    NormDataGrid.Columns.Add(newcol);
+
+
+            //    NormDataGrid.CurrentCell = NormDataGrid[NormDataGrid.Columns.Count - 1, 0];
+
+
+
+            //}
+            LoadDefaultNorms(TAPA.Properties.Resources.Ratings_Warriner_et_al.ToString().Split(new string[] { "\r\n", "\n", "\r" }, StringSplitOptions.None));
+            FilenameLabel.Text = "Default norms are loaded and TAPA is ready to use.";
 
 
         }
@@ -1333,6 +1371,7 @@ namespace Textual_Affective_Properties_Analyzer
             //using a data table to update the grid -- this is
             //far, far faster than working directly on the grid itself
             DataTable dt = new DataTable();
+            dt.Locale = new CultureInfo("en-us");
 
             double retNum;
             int numcols = 0;
@@ -1444,7 +1483,7 @@ namespace Textual_Affective_Properties_Analyzer
                 Application.DoEvents();
                 NormDataGrid.DataSource = dt;
             }
-            catch (Exception ex)
+            catch
             {
 
                 FilenameLabel.Text = "Updating norm grid...";
@@ -1476,6 +1515,7 @@ namespace Textual_Affective_Properties_Analyzer
             //using a data table to update the grid -- this is
             //far, far faster than working directly on the grid itself
             DataTable dt = new DataTable();
+            dt.Locale = new CultureInfo("en-us");
             try
             {
                 double retNum;
@@ -1620,6 +1660,13 @@ namespace Textual_Affective_Properties_Analyzer
             }
         }
 
+        private void NormDataGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
+            //MessageBox.Show(NormDataGrid.SelectedCells[0].Value.ToString());
+            
+
+        }
     }
     
 }

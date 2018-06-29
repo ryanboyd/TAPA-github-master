@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.NormDataGrid = new System.Windows.Forms.DataGridView();
             this.AddColumnButton = new System.Windows.Forms.Button();
@@ -42,6 +43,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.PunctuationBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CountsAndSumsCheckbox = new System.Windows.Forms.CheckBox();
             this.WordCaseSensitiveCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.LoadNormsButton = new System.Windows.Forms.Button();
@@ -49,11 +51,12 @@
             this.StopListLabel = new System.Windows.Forms.Label();
             this.FunctionWordTextBox = new System.Windows.Forms.TextBox();
             this.StopListButton = new System.Windows.Forms.Button();
-            this.CancelButton = new System.Windows.Forms.Button();
-            this.CountsAndSumsCheckbox = new System.Windows.Forms.CheckBox();
+            this.CancelButtonRenamed = new System.Windows.Forms.Button();
+            this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.NormDataGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // NormDataGrid
@@ -64,11 +67,13 @@
             this.NormDataGrid.MaximumSize = new System.Drawing.Size(450, 410);
             this.NormDataGrid.MinimumSize = new System.Drawing.Size(450, 420);
             this.NormDataGrid.Name = "NormDataGrid";
+            this.NormDataGrid.ReadOnly = true;
             this.NormDataGrid.Size = new System.Drawing.Size(450, 420);
             this.NormDataGrid.TabIndex = 0;
             this.NormDataGrid.VirtualMode = true;
+            //this.NormDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.NormDataGrid_CellValueChanged);
             this.NormDataGrid.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.NormDataGrid_DataError);
-            this.NormDataGrid.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.NormDataGrid_UserAddedRow);
+            //this.NormDataGrid.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.NormDataGrid_UserAddedRow);
             // 
             // AddColumnButton
             // 
@@ -76,7 +81,7 @@
             this.AddColumnButton.Name = "AddColumnButton";
             this.AddColumnButton.Size = new System.Drawing.Size(143, 23);
             this.AddColumnButton.TabIndex = 1;
-            this.AddColumnButton.Text = "Add New Column to Sheet";
+            this.AddColumnButton.Text = "Load Default Norms";
             this.AddColumnButton.UseVisualStyleBackColor = true;
             this.AddColumnButton.Click += new System.EventHandler(this.AddColumnButton_Click);
             // 
@@ -179,6 +184,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Text Analysis Options";
             // 
+            // CountsAndSumsCheckbox
+            // 
+            this.CountsAndSumsCheckbox.AutoSize = true;
+            this.CountsAndSumsCheckbox.Location = new System.Drawing.Point(6, 146);
+            this.CountsAndSumsCheckbox.Name = "CountsAndSumsCheckbox";
+            this.CountsAndSumsCheckbox.Size = new System.Drawing.Size(188, 17);
+            this.CountsAndSumsCheckbox.TabIndex = 21;
+            this.CountsAndSumsCheckbox.Text = "Include counts and sums in output";
+            this.CountsAndSumsCheckbox.UseVisualStyleBackColor = true;
+            // 
             // WordCaseSensitiveCheckbox
             // 
             this.WordCaseSensitiveCheckbox.AutoSize = true;
@@ -244,32 +259,26 @@
             this.StopListButton.UseVisualStyleBackColor = true;
             this.StopListButton.Click += new System.EventHandler(this.StopListButton_Click);
             // 
-            // CancelButton
+            // CancelButtonRenamed
             // 
-            this.CancelButton.Location = new System.Drawing.Point(709, 409);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(102, 23);
-            this.CancelButton.TabIndex = 22;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.CancelButtonRenamed.Location = new System.Drawing.Point(709, 409);
+            this.CancelButtonRenamed.Name = "CancelButtonRenamed";
+            this.CancelButtonRenamed.Size = new System.Drawing.Size(102, 23);
+            this.CancelButtonRenamed.TabIndex = 22;
+            this.CancelButtonRenamed.Text = "Cancel";
+            this.CancelButtonRenamed.UseVisualStyleBackColor = true;
+            this.CancelButtonRenamed.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // CountsAndSumsCheckbox
+            // programBindingSource
             // 
-            this.CountsAndSumsCheckbox.AutoSize = true;
-            this.CountsAndSumsCheckbox.Location = new System.Drawing.Point(6, 146);
-            this.CountsAndSumsCheckbox.Name = "CountsAndSumsCheckbox";
-            this.CountsAndSumsCheckbox.Size = new System.Drawing.Size(188, 17);
-            this.CountsAndSumsCheckbox.TabIndex = 21;
-            this.CountsAndSumsCheckbox.Text = "Include counts and sums in output";
-            this.CountsAndSumsCheckbox.UseVisualStyleBackColor = true;
+            this.programBindingSource.DataSource = typeof(Textual_Affective_Properties_Analyzer.Program);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(884, 471);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.CancelButtonRenamed);
             this.Controls.Add(this.StopListButton);
             this.Controls.Add(this.StopListLabel);
             this.Controls.Add(this.FunctionWordTextBox);
@@ -292,6 +301,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -319,8 +329,9 @@
         private System.Windows.Forms.Label StopListLabel;
         private System.Windows.Forms.TextBox FunctionWordTextBox;
         private System.Windows.Forms.Button StopListButton;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button CancelButtonRenamed;
         private System.Windows.Forms.CheckBox CountsAndSumsCheckbox;
+        private System.Windows.Forms.BindingSource programBindingSource;
     }
 }
 

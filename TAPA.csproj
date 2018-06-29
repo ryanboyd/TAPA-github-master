@@ -110,6 +110,12 @@
     <EmbeddedResource Include="Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\NormLoadingWindow.datasource" />
+    <None Include="Properties\DataSources\TAPA.Properties.Resources.datasource" />
+    <None Include="Properties\DataSources\TAPA.Properties.Settings.datasource" />
+    <None Include="Properties\DataSources\TAPA_Load.Splash.datasource" />
+    <None Include="Properties\DataSources\Textual_Affective_Properties_Analyzer.MainForm.datasource" />
+    <None Include="Properties\DataSources\Textual_Affective_Properties_Analyzer.Program.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
